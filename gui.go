@@ -590,15 +590,16 @@ func (g *Gui) draw(v *View) error {
 func (g *Gui) onKey(ev *termbox.Event) error {
 	switch ev.Type {
 	case termbox.EventKey:
-		matched, err := g.execKeybindings(g.currentView, ev)
-		if err != nil {
-			return err
+		matched := false
+		if g.currentView != nil && g.currentView.Editable && g.currentView.Editor != nil {
+			matched = g.currentView.Editor.Edit(g.currentView, Key(ev.Key), ev.Ch, Modifier(ev.Mod))
 		}
 		if matched {
 			break
 		}
-		if g.currentView != nil && g.currentView.Editable && g.currentView.Editor != nil {
-			g.currentView.Editor.Edit(g.currentView, Key(ev.Key), ev.Ch, Modifier(ev.Mod))
+		matched, err := g.execKeybindings(g.currentView, ev)
+		if err != nil {
+			return err
 		}
 	case termbox.EventMouse:
 		mx, my := ev.MouseX, ev.MouseY
