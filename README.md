@@ -4,6 +4,9 @@
 
 Minimalist Go package aimed at creating Console User Interfaces.
 
+This is a fork of [jroimartin/gocui](https://github.com/jroimartin/gocui). Changes so far:
+* Views can override global keybindings.
+
 ## Features
 
 * Minimalist API.
