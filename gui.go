@@ -349,10 +349,16 @@ func (g *Gui) SetManagerFunc(manager func(*Gui) error) {
 // MainLoop runs the main loop until an error is returned. A successful
 // finish should return ErrQuit.
 func (g *Gui) MainLoop() error {
+	running := true
+
 	go func() {
-		for {
+		for running {
 			g.tbEvents <- termbox.PollEvent()
 		}
+	}()
+
+	defer func() {
+		running = false
 	}()
 
 	inputMode := termbox.InputAlt
